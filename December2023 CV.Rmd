@@ -1,0 +1,92 @@
+---
+title: "December 2023 CVs"
+output: word_document
+date: "2023-12-29"
+---
+
+```{r}
+
+### Loading Necessary Libraries 
+library(boot)
+library(bootstrap)
+library(dplyr)
+library(readxl)
+library(rlang)
+library(tidyverse)
+library(mosaic)
+
+unmasked_object1 <- stats:::var
+unmasked_object2 <- stats:::sd
+
+# Clean up data, remove geese/coots, specify DABB/DIVE?AllDucks
+Dec_22_R <- read_excel("Dec_22_R.xls")
+
+Remove_geese_coot <- c("CAGO", "LSGO", "GWFG", "AMCO", "DEADGO", "DEADDU")
+
+DABB <- c("ABDU", "AMWI", "AGWT", "BWTE", "GADW","DABB", "MALL", "NOPI", "NSHO", "TEAL", "WODU")
+
+DIVE <- c("BUFF", "CANV", "DIVE", "HOME", "LESC", "RNDU", "RUDU", "REDH", "SCAU")
+
+Dec_22_Ducks <- Dec_22_R %>%
+  filter(!(Species %in% Remove_geese_coot))
+Master_df <- read_excel("11_03_2022_Ten Percent Chosen.xlsx")
+
+Dec_DIVE <- Dec_22_Ducks %>%
+  filter(!Species %in% DABB)
+
+Dec_DABB <- Dec_22_Ducks %>%
+  filter(!Species %in% DIVE)
+
+dec_total_DABB <- sum(Dec_DABB$Count)
+
+dec_total_DIVE <- sum(Dec_DIVE$Count)
+
+dec_total_AllDucks <- sum(Dec_22_Ducks$Count)
+
+unique_count <- length(unique(Dec_22_Ducks$Transect))
+
+# Calculate mean, SD, SE, CV, Variance for R10% DABB/DIVE/AllDucks
+
+
+## DABB
+d_mean_DABB <- mean(Dec_DABB$Count)
+d_sd_DABB <- sd(Dec_DABB$Count)
+d_ss_DABB <- length(Dec_DABB$Count)
+d_SE_DABB <- d_sd_DABB / sqrt(58)
+d_CV_DABB <- (d_sd_DABB/d_mean_DABB)*100
+cat("Standard Error - Dec DABB", d_SE_DABB, "\n")
+cat("Coefficient of Variation - Dec DABB:", d_CV_DABB, "%\n")
+
+d_pop_variance_DABB <- var(Dec_DABB$Count, na.rm = TRUE)
+
+## DIVE
+d_mean_DIVE <- mean(Dec_DIVE$Count)
+d_sd_DIVE <- sd(Dec_DIVE$Count)
+d_ss_DIVE <- length(Dec_DIVE$Count)
+d_SE_DIVE <- d_sd_DIVE / sqrt(58)
+d_CV_DIVE <- (d_sd_DIVE/d_mean_DIVE)*100
+cat("Standard Error - Dec DIVE", d_SE_DIVE, "\n")
+cat("Coefficient of Variation - Dec DIVE:", d_CV_DIVE, "%\n")
+
+d_pop_variance_DIVE <- var(Dec_DIVE$Count, na.rm = TRUE)
+
+## AllDucks
+d_mean_AllDucks <- mean(Dec_22_Ducks$Count)
+d_sd_AllDucks <- sd(Dec_22_Ducks$Count)
+d_ss_AllDucks <- length(Dec_22_Ducks$Count)
+d_SE_AllDucks <- d_sd_AllDucks / sqrt(58)
+d_CV_AllDucks <- (d_sd_AllDucks/d_mean_AllDucks)*100
+cat("Standard Error - Dec AllDucks", d_SE_AllDucks, "\n")
+cat("Coefficient of Variation - Dec AllDucks:", d_CV_AllDucks, "%\n")
+
+d_pop_variance_AllDucks <- var(Dec_22_Ducks$Count, na.rm = TRUE)
+
+
+dec_total_DABB <- sum(Dec_DABB$Count)
+
+dec_total_DIVE <- sum(Dec_DIVE$Count)
+
+dec_total_AllDucks <- sum(Dec_22_Ducks$Count)
+
+```
+
